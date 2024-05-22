@@ -10,7 +10,7 @@ defmodule AcmeWeb.PlotsListLive do
     end
   
     def mount(_params, _session, socket) do
-      {:ok, assign(socket, layout: {AcmeWeb.Layouts, "logged_in"})}
+      {:ok, socket}
     end
   end
   

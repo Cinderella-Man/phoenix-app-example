@@ -68,6 +68,15 @@ defmodule AcmeWeb.Router do
       on_mount: [{AcmeWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+    end
+  end
+
+  scope "/", AcmeWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :require_authenticated_user_super_layout,
+      on_mount: [{AcmeWeb.UserAuth, :ensure_authenticated}],
+      layout: {AcmeWeb.Layouts, :logged_in} do
       live "/plots", PlotsListLive, :list
     end
   end
