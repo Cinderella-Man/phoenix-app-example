@@ -13,10 +13,6 @@ defmodule AcmeWeb.Router do
     plug :fetch_current_user
   end
 
-  pipeline :authenticated_layout do
-    plug :put_layout, html: {AcmeWeb.Layouts, :logged_in}
-  end
-
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -66,12 +62,13 @@ defmodule AcmeWeb.Router do
   end
 
   scope "/", AcmeWeb do
-    pipe_through [:browser, :require_authenticated_user, :authenticated_layout]
+    pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
       on_mount: [{AcmeWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/plots", PlotsListLive, :list
     end
   end
 
